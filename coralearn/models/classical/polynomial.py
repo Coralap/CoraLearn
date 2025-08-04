@@ -2,7 +2,7 @@ import numpy as np
 
 from coralearn.models.classical.basemodel import BaseModel
 
-
+#most of this code is the same as the linear model, i suggest looking at it and then just look at the expand and scale x for further comments
 class PolynomialModel(BaseModel):
     def __init__(self, input_size, degree=2):
         super().__init__(input_size)
@@ -14,6 +14,8 @@ class PolynomialModel(BaseModel):
         self.X_mean = None
         self.X_std = None
 
+
+    #z-score normalization
     def scale_X(self, X):
         if self.X_mean is None or self.X_std is None:
             self.X_mean = X.mean(axis=0)
@@ -22,6 +24,8 @@ class PolynomialModel(BaseModel):
             self.X_std[self.X_std == 0] = 1.0
         return (X - self.X_mean) / self.X_std
 
+
+    #power every number by 1 - degree to get x**1 x**2 x**3 until x**degree for poly regression
     def expand_X(self, X):
         m, n = X.shape
         poly_X = np.zeros((m, n * self.degree), dtype=np.float32)
