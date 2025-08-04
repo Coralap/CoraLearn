@@ -3,7 +3,7 @@ import numpy as np
 from coralearn.models.classical.basemodel import BaseModel
 
 
-class SimplePolynomialModel(BaseModel):
+class PolynomialModel(BaseModel):
     def __init__(self, input_size, degree=2):
         super().__init__(input_size)
         self.degree = degree

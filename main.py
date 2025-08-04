@@ -1,6 +1,7 @@
 from coralearn.models.classical.linear import LinearModel
-from coralearn.models.classical.simple_polynomial import SimplePolynomialModel
+from coralearn.models.classical.polynomial import PolynomialModel
 from coralearn.losses.mse import mean_squared_error
+from coralearn.models.classification import k_nearest_neighbor
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -8,7 +9,7 @@ import matplotlib.pyplot as plt
 X = np.array([[1], [2], [3], [4]], dtype=np.float32)
 y = np.array([2, 8, 6, 8], dtype=np.float32)
 
-model = SimplePolynomialModel(input_size=1,degree=6)
+model = PolynomialModel(input_size=1,degree=3)
 model.fit(X, y, epochs=10000, learning_rate=0.01)
 
 print("Weight:", model.w)

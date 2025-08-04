@@ -13,6 +13,7 @@ class BaseModel:
 
     def fit(self, X, y, epochs=100, learning_rate=0.1):
         for _ in range(epochs):
+            #change the w and b based on the learning rate and derivatives given by the compute gradient function
             dj_dw, dj_db = self.compute_gradient(X, y)
             self.w -= learning_rate * dj_dw
             self.b -= learning_rate * dj_db
