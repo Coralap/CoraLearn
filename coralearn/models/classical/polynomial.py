@@ -27,11 +27,15 @@ class PolynomialModel(BaseModel):
         return poly_X.dot(self.w) + self.b
 
     def compute_gradient(self, X, y):
-        # On first call during fit, compute and store mean/std
+        scaler = StandardScaler()
         if self.X_mean is None or self.X_std is None:
-            X_scaled, self.X_mean, self.X_std = StandardScaler(X)
+            # Fit scaler and save mean/std
+            X_scaled, self.X_mean, self.X_std = scaler.fit_transform(X)
         else:
-            X_scaled, _, _ = StandardScaler(X, self.X_mean, self.X_std)
+            # Use stored mean/std for scaling without fitting again
+            scaler.mean_ = self.X_mean
+            scaler.scale_ = self.X_std
+            X_scaled = scaler.transform(X)
 
         X_expanded = self.expand_X(X_scaled)
         m = X_expanded.shape[0]
@@ -40,6 +44,8 @@ class PolynomialModel(BaseModel):
         error = f_wb - y
 
         dj_dw = X_expanded.T.dot(error) / m
-        dj_db = np.mean(error)
+        dj_db = np.sum(error) / m
 
         return dj_dw, dj_db
+
+
