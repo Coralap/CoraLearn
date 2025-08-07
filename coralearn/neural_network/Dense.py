@@ -9,6 +9,7 @@ class Dense():
         self.W = np.random.randn(input_size, output_size) * 0.01  # small random weights
         self.b = np.zeros((1, output_size))  # bias vector
 
+
     def forward(self, A_in):
         assert A_in.shape[1] == self.input_size, "Input size given does not match the layer's expected input size."
         z = np.matmul(A_in, self.W) + self.b
