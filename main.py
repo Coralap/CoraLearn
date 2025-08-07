@@ -37,12 +37,13 @@ def check_logistic():
     print(f"Training binary cross-entropy loss: {loss:.4f}")
 
     # Plot data and predicted probabilities
-    plt.scatter(X, y, c='blue', label='True labels',marker ="x")
+    plt.scatter(X, y, c='blue', label='True labels', marker="x")
     plt.scatter(X, train_preds, c='red', label='Predicted probabilities')
     plt.xlabel('X')
     plt.ylabel('Probability')
     plt.legend()
     plt.show()
+
 
 def check_neural():
     X = np.array([[1.0, 2.0, 3.0],
@@ -58,5 +59,6 @@ def check_neural():
     model.compile(binary_cross_entropy)
     output = model.forward(X)
     print(output)
+
 
 check_neural()

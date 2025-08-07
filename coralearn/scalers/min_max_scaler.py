@@ -6,10 +6,9 @@ class MinMaxScaler:
         self.X_min = None
         self.X_max = None
 
-    def fit(self,X):
+    def fit(self, X):
         self.X_min = np.min(X, axis=0)
         self.X_max = np.max(X, axis=0)
-
 
     def transform(self, X):
 
