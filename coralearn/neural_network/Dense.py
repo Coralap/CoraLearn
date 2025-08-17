@@ -1,5 +1,5 @@
 import numpy as np
-
+from coralearn.activations.softmax import softmax
 
 class Dense():
     def __init__(self, input_size, output_size, activation):
@@ -25,7 +25,10 @@ class Dense():
         self.error_function = error_function
 
     def backward(self, dA, lr=0.1):
-        dZ = dA * self.DA_out  # sigmoid derivative
+        if self.activation is not softmax:
+            dZ = dA * self.DA_out  # sigmoid, relu, etc.
+        else:
+            dZ = dA
         dW = np.matmul(self.A_in.T, dZ)  # multiplying X by Dz(wx' = x) and using the chain rule get the error
         db = np.sum(dZ, axis=0, keepdims=True)  # summing up db to get a single value
         dA_prev = np.matmul(dZ, self.W.T)  # giving the next dA of the one before in order to continue the backprop
