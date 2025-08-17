@@ -1,6 +1,8 @@
 from coralearn.activations.linear_activation import linear_activation
 from coralearn.activations.relu import relu
 from coralearn.activations.sigmoid import sigmoid
+from coralearn.losses import mse
+from coralearn.losses.mse import mean_squared_error
 from coralearn.models.classification.logistic_regression import LogisticRegressionModel
 from coralearn.losses.binary_cross_entropy import binary_cross_entropy
 
@@ -46,17 +48,23 @@ def check_logistic():
 
 
 def check_neural():
-    X = np.array([[1.0, 2.0, 3.0],
-                  [4.0, 5.0, 6.0]])
+    X = np.array([[0, 0],
+                  [0, 1],
+                  [1, 0],
+                  [1, 1]])
+    y = np.array([[0],
+                  [1],
+                  [1],
+                  [1]])
     np.random.seed(42)
 
     # Initialize your model
     model = Sequential([
-        Dense(input_size=3, output_size=4, activation=relu),
-        Dense(input_size=4, output_size=2, activation=relu),
-        Dense(input_size=2, output_size=1, activation=linear_activation)
+        Dense(input_size=2, output_size=3, activation=relu),
+        Dense(input_size=3, output_size=1, activation=sigmoid)
     ])
-    model.compile(binary_cross_entropy)
+    model.compile(mean_squared_error)
+    model.train(X,y, epochs=1000,lr =0.05)
     output = model.forward(X)
     print(output)
 

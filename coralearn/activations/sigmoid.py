@@ -2,4 +2,6 @@ import numpy as np
 
 
 def sigmoid(x):
-    return 1 / (1 + np.exp(-x))
+    g = 1 / (1 + np.exp(-x))
+    grad = g * (1 - g)
+    return g, grad
