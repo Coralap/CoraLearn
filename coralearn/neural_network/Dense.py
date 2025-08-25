@@ -13,6 +13,8 @@ class Dense():
         self.activation = activation
         self.W = np.random.randn(input_size, output_size) * 0.1  # small random weights
         self.b = np.zeros((1, output_size))  # bias vector
+        self.dW = None
+        self.db = None
 
     def forward(self, A_in):
         assert A_in.shape[1] == self.input_size, "Input size given does not match the layer's expected input size."
@@ -24,16 +26,14 @@ class Dense():
     def compile(self, error_function):
         self.error_function = error_function
 
-    def backward(self, dA, lr=0.1):
+    def backward(self, dA):
         if self.activation is not softmax:
-            dZ = dA * self.DA_out  # sigmoid, relu, etc.
+            dZ = dA * self.DA_out
         else:
             dZ = dA
-        dW = np.matmul(self.A_in.T, dZ)  # multiplying X by Dz(wx' = x) and using the chain rule get the error
-        db = np.sum(dZ, axis=0, keepdims=True)  # summing up db to get a single value
-        dA_prev = np.matmul(dZ, self.W.T)  # giving the next dA of the one before in order to continue the backprop
 
-        # update weights based on gradient descent(will change later to choosing and optimizer)
-        self.W -= lr * dW
-        self.b -= lr * db
+        self.dW = np.matmul(self.A_in.T, dZ)
+        self.db = np.sum(dZ, axis=0, keepdims=True)
+        dA_prev = np.matmul(dZ, self.W.T)
         return dA_prev
+
