@@ -5,3 +5,5 @@ from .models.classical import BaseModel, LinearModel, PolynomialModel
 from .models.classification import KNNModel,LogisticRegressionModel
 from .neural_network import Dense,Sequential
 from .scalers import MinMaxScaler,RobustScaler,StandardScaler
+
+from .optimizers import SGD, SGDMomentum,Optimizer

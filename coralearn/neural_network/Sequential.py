@@ -1,3 +1,5 @@
+import numpy as np
+
 from coralearn.optimizers.SGD import SGD
 
 
@@ -22,20 +24,37 @@ class Sequential():
             loss_grad = layer.backward(loss_grad)
         return loss_grad
 
-    def train(self, X, y, epochs=100):
+    def train(self, X_in, y_in, epochs=100,batch_size=32):
+        samples_length = len(X_in)
         for epoch in range(epochs):
-            # forward
-            y_pred = self.forward(X)
+            indices = np.random.permutation(samples_length)
+            X_shuffled = X_in[indices]
+            y_shuffled = y_in[indices]
 
-            # get loss and gradient
-            loss_val, loss_grad = self.loss(y,y_pred)
+            epoch_loss = 0
+            n_batches = 0
 
-            # backward pass
-            self.backward(loss_grad)
+            for i in range(0,samples_length,batch_size):
+                end_index = min(i + batch_size, samples_length)
+                X_batch = X_shuffled[i:end_index]
+                y_batch = y_shuffled[i:end_index]
 
-            for layer in self.layers:
-                self.optimizer.update([layer.W, layer.b], [layer.dW, layer.db])
+                # forward
+                y_pred = self.forward(X_batch)
+
+                # get loss and gradient
+                loss_val, loss_grad = self.loss(y_batch,y_pred)
+
+                epoch_loss += loss_val
+                n_batches += 1
+
+                # backward pass
+                self.backward(loss_grad)
+
+                for layer in self.layers:
+                    self.optimizer.update([layer.W, layer.b], [layer.dW, layer.db])
 
             #print every 100 epochs the value
             if epoch % 100 == 0:
-                print(f"Epoch {epoch}, Loss = {loss_val:.4f}")
+                avg_loss = epoch_loss / n_batches
+                print(f"Epoch {epoch}, Loss = {avg_loss:.4f}")
