@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 
 from coralearn.neural_network.Dense import Dense
 from coralearn.neural_network.Sequential import Sequential
+from coralearn.optimizers.NAG import NAG
 from coralearn.optimizers.SGD import SGD
 from coralearn.optimizers.SGDMomentum import SGDMomentum
 
@@ -65,7 +66,7 @@ def check_neural():
         Dense(input_size=2, output_size=3, activation=relu),
         Dense(input_size=3, output_size=1, activation=sigmoid)
     ])
-    optimizer = SGDMomentum(lr=0.1)
+    optimizer = NAG(lr=0.5)
     model.compile(mean_squared_error,optimizer=optimizer)
     model.train(X,y, epochs=1000)
     output = model.forward(X)

@@ -1,5 +1,4 @@
 import numpy as np
-
 from coralearn.optimizers import Optimizer
 
 
@@ -7,14 +6,22 @@ class SGDMomentum(Optimizer):
     def __init__(self, lr=0.01, beta=0.9):
         self.lr = lr
         self.beta = beta
-        self.v = []
+        self.v = {}  # store per-layer velocities
 
-    def update(self, params, grads):
+    def update(self, layer=None, layers=None, X=None, y=None, loss=None, layer_input=None):
+        # Initialize velocities for this layer if not done yet
+        if id(layer) not in self.v:
+            self.v[id(layer)] = [np.zeros_like(layer.W), np.zeros_like(layer.b)]
 
-        if not self.v or any(v.shape != p.shape for v, p in zip(self.v, params)):
-            self.v = [np.zeros_like(p) for p in params]
+        vW, vb = self.v[id(layer)]
 
-        for i, (param, grad) in enumerate(zip(params, grads)):
-            self.v[i] = self.beta * self.v[i] + grad
+        # momentum update
+        vW = self.beta * vW + layer.dW
+        vb = self.beta * vb + layer.db
 
-            param[...] -= self.lr * self.v[i]
+        # apply update
+        layer.W -= self.lr * vW
+        layer.b -= self.lr * vb
+
+        # save back
+        self.v[id(layer)] = [vW, vb]
