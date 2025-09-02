@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as f:
 
 setup(
     name="coralearn",
-    version="0.2",
+    version="0.2.1",
     author="Coralap",
     description="An AI library written using only NumPy",
     long_description=long_description,

@@ -76,6 +76,10 @@ print("Predictions:", y_pred)
 ### Optimizers⚡ 
 - SGD
 - SGDMomentum
+- NAG
+- AdaGrad
+- RMSprop
+- Adam
 
 ### Activations ⏰
 - relu
